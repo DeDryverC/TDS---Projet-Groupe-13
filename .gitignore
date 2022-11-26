@@ -1,0 +1,4 @@
+#ignore files like venv
+
+/venv
+.idea

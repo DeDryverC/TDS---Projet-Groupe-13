@@ -1,0 +1,5 @@
+### package requirements ###
+
+
+PySimpleGUI==4.60.4
+tcxreader==0.4.2

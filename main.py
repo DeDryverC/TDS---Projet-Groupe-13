@@ -1,16 +1,64 @@
-# This is a sample Python script.
+import PySimpleGUI as sg
+import os.path
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+## A snippet of the PySimpleGui tutorial
+## https://realpython.com/pysimplegui-python/
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    first_column = [
+        [sg.Text("Race app"),
+         sg.In(size=(25 ,1), enable_events=True, key="-FOLDER-"),
+         sg.FolderBrowse()
+         ],
+        [
+            sg.Listbox(
+                values=[], enable_events=True, size=(40,20), key="-FILE LIST-"
+            )
+        ]
+    ]
+    file_viewer_colum = [
+        [sg.Text("Choose a file in the left :")],
+        [sg.Text(size=(40,1), key="-TOUT-")],
+        [sg.Image(key="-IMAGE-")]
+    ]
+    layout = [
+        [
+            sg.Column(first_column),
+            sg.VSeparator(),
+            sg.Column(file_viewer_colum)
+        ]
+    ]
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    window = sg.Window("Image Viewer", layout)
+
+    while True:
+        event, values = window.read()
+        if event == "Exit" or event == sg.WIN_CLOSED:
+            break
+
+        # Folder name was filled in, make a list of files in the folder
+        if event == "-FOLDER-":
+            folder = values["-FOLDER-"]
+            try:
+                # Get list of files in folder
+                file_list = os.listdir(folder)
+            except:
+                file_list = []
+
+            fnames = [
+                f
+                for f in file_list
+                if os.path.isfile(os.path.join(folder, f))
+                   and f.lower().endswith((".png", ".gif"))
+            ]
+            window["-FILE LIST-"].update(fnames)
+        elif event == "-FILE LIST-":  # A file was chosen from the listbox
+            try:
+                filename = os.path.join(
+                    values["-FOLDER-"], values["-FILE LIST-"][0]
+                )
+                window["-TOUT-"].update(filename)
+                window["-IMAGE-"].update(filename=filename)
+            except:
+                pass
+    window.close()
