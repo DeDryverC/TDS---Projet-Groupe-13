@@ -67,19 +67,17 @@ class ProjetTDS:
                         chronoParJoueur.append({"Distance Totale "+phrase:information.text})
                     if "MaximumSpeed" in information.tag:
                         chronoParJoueur.append({"Vitesse maximale "+phrase:information.text})
+                    if "Calories" in information.tag:
+                        calories.append({"Nombre de calories brûlées : "+phrase:information.text})
                 numéro=int(numéro)
                 numéro+=1
                 
-        list=[vitesseParCoureur,chronoParJoueur,tempsInstant,coordonnées,battementMaxCoureur,battementMoyenCoureur,battementprécisCoureur]        
-
-        #Plus qu'à remplacer donnee pour piocher la liste désirée     
-        for donnee in list:
-            for each in donnee:
-
-                print(each)   
-
-
-        
+        list=[vitesseParCoureur,chronoParJoueur,tempsInstant,coordonnées,battementMaxCoureur,battementMoyenCoureur,battementprécisCoureur,calories]        
+        nomchoisi=battementMaxCoureur
+        #Plus qu'à remplacer nomchoisi pour piocher la liste désirée   
+        for each in list:
+            if each==nomchoisi:
+                print(each)     
     """
         Affichage des données de manière brute
 
@@ -91,6 +89,7 @@ class ProjetTDS:
         print(battementMaxCoureur) #Affiche les battements max par coureurs 
         print(battementMoyenCoureur) #Affiche les battements moyens des coureurs        
         print(battementprécisCoureur) #Affiche les battements d'un coureur au moment des échantillons
+        print(calories) #Affiche les calories brûlées par le coureur au moment des échantillons
     """   
                 
                 
