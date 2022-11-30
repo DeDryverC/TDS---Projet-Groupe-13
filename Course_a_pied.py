@@ -4,7 +4,7 @@ class ProjetTDS:
     def __init__(self):
         tree = ET.parse(r'C:\Users\gaeta\Documents\Course_a_pied\Données\435357192.tcx')
         root = tree.getroot()
-        numéro=1
+        numéro=0
 
 
 
@@ -13,14 +13,9 @@ class ProjetTDS:
         battementprécisCoureur=[]
         calories=[]
         coordonnées=[]
-        chrono={}
-
-        chronoParJoueur={}
-        caloriesParCoureur={}
-        coordonnéesParCoureur={}
-        vitesseParCoureur={}
-        informationsCoureur={}
-        informationParCoureur={}
+        tempsInstant=[]
+        chronoParJoueur=[]
+        vitesseParCoureur=[]
         for section in root:
             for packet in section[0]:
                 phrase="Joueur numéro "+str(numéro)
@@ -30,10 +25,10 @@ class ProjetTDS:
                     
                     if"AverageHeartRateBpm" in information.tag:
                         for battement in information:
-                            battementMoyenCoureur.append(battement.text)
+                            battementMoyenCoureur.append({"Battement moyen "+phrase:battement.text})
                     if"MaximumHeartRateBpm" in information.tag:
                         for battement in information:
-                            battementMaxCoureur.append(battement.text)
+                            battementMaxCoureur.append({"Battement max "+phrase:battement.text})
                     if"Calories" in information.tag:
                         for battement in information:
                             calories.append(battement.text)
@@ -42,42 +37,61 @@ class ProjetTDS:
                         for geolocalisation in information:
                             for tempsAltDist in geolocalisation:
                                 if "Time" in tempsAltDist.tag:
-                                    chronoParJoueur.update({"Temps enregistré":tempsAltDist.text})
-
+                                    tempsInstant.append({"Temps enregistré "+phrase:tempsAltDist.text})
+                                if "AltitudeMeters"in tempsAltDist.tag:
+                                    tempsAltDist.text.strip()
+                                    coordonnées.append({"Altitude "+phrase:tempsAltDist.text})
+                                if "DistanceMeters"in tempsAltDist.tag:
+                                    tempsAltDist.text.strip()
+                                    coordonnées.append({"Distance parcourue "+phrase:tempsAltDist.text})
                                 if "Position" in tempsAltDist.tag:
                                     for latLong in tempsAltDist:
                                         if 'LatitudeDegrees' in latLong.tag:
-                                            coordonnées.append(latLong.text)
+                                            coordonnées.append({"Lattitude "+phrase:latLong.text})
                                                 
                                         if 'LongitudeDegrees' in latLong.tag:
-                                            coordonnées.append(latLong.text)
+                                            coordonnées.append({"Longitude "+phrase:latLong.text})
                                         
                                 if "HeartRateBpm" in tempsAltDist.tag:
                                     for donneeCardiaque in tempsAltDist:
-                                        battementprécisCoureur.append(donneeCardiaque.text)
+                                        battementprécisCoureur.append({"Battement inst "+phrase:donneeCardiaque.text})
                                 if "Extensions" in tempsAltDist.tag:
                                     for extension in tempsAltDist:
                                         for lx in extension:
-                                            print(lx.text)
-                                            vitesseParCoureur.update({"Vitesse instantannée : "+str(numéro):lx.text})
-                                            print(vitesseParCoureur)
+                                            vitesseParCoureur.append({"Vitesse inst "+phrase:lx.text})
+                    
 
                     if "TotalTimeSeconds" in information.tag:
-                        chronoParJoueur.update({"Temps Total":information.text})
+                        chronoParJoueur.append({"Temps Total "+phrase:information.text})
                     if "DistanceMeters" in information.tag:
-                        chronoParJoueur.update({"Distance Totale":information.text})
+                        chronoParJoueur.append({"Distance Totale "+phrase:information.text})
                     if "MaximumSpeed" in information.tag:
-                        chronoParJoueur.update({"Vitesse maximale":information.text})
-                
-                chrono.update({phrase:chronoParJoueur})
-                
+                        chronoParJoueur.append({"Vitesse maximale "+phrase:information.text})
                 numéro=int(numéro)
                 numéro+=1
-
-           
-
                 
+        list=[vitesseParCoureur,chronoParJoueur,tempsInstant,coordonnées,battementMaxCoureur,battementMoyenCoureur,battementprécisCoureur]        
 
+        #Plus qu'à remplacer donnee pour piocher la liste désirée     
+        for donnee in list:
+            for each in donnee:
+
+                print(each)   
+
+
+        
+    """
+        Affichage des données de manière brute
+
+        
+        print(vitesseParCoureur) #Affiche la vitesse instantanée
+        print(chronoParJoueur) #Affiche le temps total,distance totale et vitesse  max
+        print(tempsInstant) #Affiche l'heure des prises d'échantillons
+        print(coordonnées) #Affiche les données relatives à la géolocalisation
+        print(battementMaxCoureur) #Affiche les battements max par coureurs 
+        print(battementMoyenCoureur) #Affiche les battements moyens des coureurs        
+        print(battementprécisCoureur) #Affiche les battements d'un coureur au moment des échantillons
+    """   
                 
                 
 
