@@ -69,15 +69,15 @@ class ProjetTDS:
                         chronoParJoueur.append({"Vitesse maximale "+phrase:information.text})
                     if "Calories" in information.tag:
                         calories.append({"Nombre de calories brûlées : "+phrase:information.text})
-                numéro=int(numéro)
-                numéro+=1
+            numéro=int(numéro)
+            numéro+=1
                 
-        list=[vitesseParCoureur,chronoParJoueur,tempsInstant,coordonnées,battementMaxCoureur,battementMoyenCoureur,battementprécisCoureur,calories]        
-        nomchoisi=battementMaxCoureur
+            list=[vitesseParCoureur,chronoParJoueur,tempsInstant,coordonnées,battementMaxCoureur,battementMoyenCoureur,battementprécisCoureur,calories]        
+            nomchoisi=battementMaxCoureur
         #Plus qu'à remplacer nomchoisi pour piocher la liste désirée   
-        for each in list:
-            if each==nomchoisi:
-                print(each)     
+            for each in list:
+                if each==nomchoisi:
+                    print(each)     
     """
         Affichage des données de manière brute
 

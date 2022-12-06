@@ -1,12 +1,14 @@
 from tkintermapview import TkinterMapView
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk,filedialog,messagebox
 import tkinter.font as tkFont
+import xml.etree.ElementTree as ET
 
 import os
 
 
 class Gui(tk.Tk):
+
     def __init__(self):
         super().__init__()
 
@@ -61,7 +63,7 @@ class Gui(tk.Tk):
         button_import_data["font"] = ft
         button_import_data["fg"] = "#000000"
         button_import_data["justify"] = "center"
-        button_import_data["text"] = "Import data"
+        button_import_data["text"] = "Import file"
         button_import_data.place(x=0, y=130, width=280, height=40)
         button_import_data["command"] = self.button_import_data_command
 
@@ -74,8 +76,8 @@ class Gui(tk.Tk):
         label_listbox_races["text"] = "Created race :"
         label_listbox_races.place(x=0, y=170, width=280, height=40)
 
-        listbox_races_value = tk.Variable(value="lol")
-        listbox_races = tk.Listbox(root, listvariable=listbox_races_value)
+        global listbox_races
+        listbox_races = tk.Listbox(root)
         listbox_races["borderwidth"] = "1px"
         ft = tkFont.Font(family="Helvetica", size=10)
         listbox_races["font"] = ft
@@ -92,6 +94,7 @@ class Gui(tk.Tk):
         label_listbox_files["text"] = "imported files:"
         label_listbox_files.place(x=0, y=410, width=280, height=40)
 
+        global listbox_files
         listbox_files_value = tk.Variable(value=self.get_files_tcx())
         listbox_files = tk.Listbox(root, listvariable=listbox_files_value)
         listbox_files["borderwidth"] = "1px"
@@ -168,7 +171,16 @@ class Gui(tk.Tk):
         return root
 
     def button_import_data_command(self):
-        print("A faire")
+
+        file_name=[]
+        filetypes = (("Tcx files", "*.tcx"),("All files", "*.*"))
+        file_name += filedialog.askopenfilename(title = "Selectionnez le fichier",filetypes = filetypes,multiple=True)
+        listbox_files.delete(0,listbox_files.size())
+        for i in file_name:
+            
+            valeur=(i.find("data/"))
+            importedfiles_list=i[valeur+5:len(i)]
+            listbox_files.insert(0,importedfiles_list)
 
     def button_create_race_command(self):
         left_column_home = self.frame_create_race()
@@ -222,35 +234,9 @@ class Gui(tk.Tk):
         create_race = self.frame_create_race()
         create_race.grid(column=1, row=0, rowspan=4, sticky=tk.W)
 
-        # # create map widget
-        # map_widget = TkinterMapView(root_tk, width=600, height=400, corner_radius=0)
-        # map_widget.pack(fill="both", expand=True)
-        #
-        # # google normal tile server
-        # map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)
-        #
-        # map_widget.set_address("Ottignies Belgium", marker=False)
-
+       
     def button_exit_command(self):
         exit()
-
-    def frame_add_runner(self, count):
-        """
-
-        :param count:
-        :return:
-        """
-
-        # TODO: Faire un check si meme course (comparer les differences entre les coordonnées, si proche alors c'est bon
-
-        frame = ttk.Frame(self)
-
-        title = ttk.Label(frame, text="Runner {}".format(count))
-        title.grid(column=0, row=0, sticky=tk.W)
-
-        # TODO : faire un file input
-
-        return frame
 
     def frame_create_race(self):
         self.title('Race App - Create race')
@@ -258,11 +244,11 @@ class Gui(tk.Tk):
         root = tk.Frame(self, background="#393d49")
 
         label_title_frame = tk.Label(root, justify="left")
-        ft = tkFont.Font(family='Helvetica', size=12)
+        ft = tkFont.Font(family='Helvetica', size=25)
         label_title_frame["bg"] = "#393d49"
         label_title_frame["font"] = ft
         label_title_frame["fg"] = "#ffffff"
-        label_title_frame["text"] = "new race"
+        label_title_frame["text"] = "New race"
         label_title_frame.place(x=30, y=0, width=970, height=30)
 
         button_exit_frame = tk.Button(root)
@@ -284,24 +270,26 @@ class Gui(tk.Tk):
         label_name_race["text"] = "Name :"
         label_name_race.place(x=0, y=70, width=225, height=110)
 
+        global entry_name_race
         entry_name_race = tk.Entry(root)
         entry_name_race["bg"] = "#393d49"
         entry_name_race["borderwidth"] = "1px"
         ft = tkFont.Font(family='Helvetica', size=22)
         entry_name_race["font"] = ft
-        entry_name_race["fg"] = "#ffffff"
+        entry_name_race["fg"] = "#000000"
         entry_name_race["justify"] = "left"
-        entry_name_race["text"] = "Entry"
+        entry_name_race.insert(0,"Enter the name of your race")
         entry_name_race.place(x=200, y=100, width=640, height=50)
 
         # TODO : Trouver comment faire un affichage stylé.
+        global GLabel_924
         GLabel_924 = tk.Label(root)
         ft = tkFont.Font(family='Helvetica', size=10)
         GLabel_924["font"] = ft
         GLabel_924["fg"] = "#333333"
         GLabel_924["justify"] = "center"
-        GLabel_924["text"] = "label"
-        GLabel_924.place(x=0, y=190, width=840, height=113)
+        GLabel_924["text"] = "Runner list"
+        GLabel_924.place(x=100, y=190, width=840, height=113)
 
         button_add_runner = tk.Button(root)
         button_add_runner["bg"] = "#1e90ff"
@@ -324,12 +312,47 @@ class Gui(tk.Tk):
         button_start_race["command"] = self.button_start_race_command
 
         return root
-
+    def données(self,coureur,motclef):
+        for id in coureur:
+            tree = ET.parse(r'static/data/'+id)
+            root = tree.getroot()
+            
+             
+    print("FIN DES DONNES DU COUREUR")
     def button_start_race_command(self):
-        print("button_start_race_command")
 
+        if GLabel_924["text"] == "Runner list":
+            messagebox.showinfo(message="Veuillez rajouter des coureurs avant de créer la course")
+
+        elif entry_name_race.get() in listbox_races.get(0,listbox_races.size()):
+            messagebox.showinfo(message="Cette course existe déjà")
+        
+        else:
+            altitude_longitude_lattitude=self.données(coureur=listbox_files.get(0,listbox_files.size()),motclef="coordonnées")
+            print(altitude_longitude_lattitude)
+            listbox_races.insert("end",entry_name_race.get())
+            map_widget = TkinterMapView(width=600,height=200,)
+            map_widget.place(relx=0.62, rely=0.67,anchor="center")
+            map_widget.set_position(48.860381, 2.338594)
+    
     def button_add_runner_command(self):
-        print("button_add_runner_command")
+        file_name=[]
+        filetypes = (("Tcx files", "*.tcx"),("All files", "*.*"))
+        file_name += filedialog.askopenfilename(title = "Selectionnez le fichier",filetypes = filetypes,multiple=True)
+        GLabel_924['text']=""
+        br=0
+        for i in file_name:
+
+            valeur=(i.find("data/"))
+            name_list=i[valeur+5:len(i)-4]
+            GLabel_924['text']+=" Coureur numéro : "+name_list
+            br+=1
+            if br%4==0:
+                GLabel_924['text']+="\n"
+
+        
+
+
 
     def button_exit_frame(self):
         left_column_home = self.frame_home()
