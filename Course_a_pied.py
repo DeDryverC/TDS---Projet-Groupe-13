@@ -1,8 +1,8 @@
-
 import xml.etree.ElementTree as ET
+
 class ProjetTDS:
     def __init__(self):
-        tree = ET.parse(r'C:\Users\gaeta\Documents\Course_a_pied\Données\435357192.tcx')
+        tree = ET.parse(r'static/data/435340338.tcx')
         root = tree.getroot()
         numéro=0
 
