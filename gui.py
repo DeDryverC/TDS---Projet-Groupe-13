@@ -36,6 +36,7 @@ class Gui(tk.Tk):
         return files
 
     def frame_menu_right(self):
+
         root = tk.Frame(self, background="#393d49")
 
         label_app_title = tk.Label(root,
@@ -169,6 +170,149 @@ class Gui(tk.Tk):
         button_import_file["command"] = self.button_import_data_command
 
         return root
+
+    def frame_race(self):
+        root = tk.Frame(self, background="#393d49")
+
+        frame_tkintermapview = TkinterMapView(root, width=600, height=500)
+        frame_tkintermapview.place(x=20, y=20, width=600, height=500)
+        frame_tkintermapview.set_position(50.594444274902344, 4.319681106135249)
+        marker_1 = frame_tkintermapview.set_marker(50.594444274902344, 4.319681106135249, text="Runner")
+
+        frame_data_1 = tk.Label(root)
+        frame_data_1["bg"] = "#0000ff"
+        ft = tkFont.Font(family='Times', size=10)
+        frame_data_1["font"] = ft
+        frame_data_1["fg"] = "#333333"
+        frame_data_1["justify"] = "center"
+        frame_data_1["text"] = "label"
+        frame_data_1.place(x=350, y=550, width=300, height=150)
+
+        frame_data_2 = tk.Label(root)
+        frame_data_2["bg"] = "#0033ff"
+        ft = tkFont.Font(family='Times', size=10)
+        frame_data_2["font"] = ft
+        frame_data_2["fg"] = "#333333"
+        frame_data_2["justify"] = "center"
+        frame_data_2["text"] = "label"
+        frame_data_2.place(x=680, y=550, width=300, height=150)
+
+        frame_data_3 = tk.Label(root)
+        frame_data_3["bg"] = "#002bff"
+        ft = tkFont.Font(family='Times', size=10)
+        frame_data_3["font"] = ft
+        frame_data_3["fg"] = "#000000"
+        frame_data_3["justify"] = "center"
+        frame_data_3["text"] = "label"
+        frame_data_3.place(x=20, y=550, width=300, height=150)
+
+        button_close = tk.Button(root)
+        button_close["bg"] = "#bc0000"
+        ft = tkFont.Font(family='Times', size=10)
+        button_close["font"] = ft
+        button_close["fg"] = "#000000"
+        button_close["justify"] = "center"
+        button_close["text"] = "X"
+        button_close.place(x=975, y=0, width=25, height=25)
+        button_close["command"] = self.button_exit_frame
+
+        button_speed_x_2 = tk.Button(root)
+        button_speed_x_2["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times', size=10)
+        button_speed_x_2["font"] = ft
+        button_speed_x_2["fg"] = "#000000"
+        button_speed_x_2["justify"] = "center"
+        button_speed_x_2["text"] = "x2"
+        button_speed_x_2.place(x=810, y=80, width=70, height=25)
+        button_speed_x_2["command"] = self.button_speed_x_2_command
+
+        button_start_race = tk.Button(root)
+        button_start_race["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times', size=10)
+        button_start_race["font"] = ft
+        button_start_race["fg"] = "#000000"
+        button_start_race["justify"] = "center"
+        button_start_race["text"] = "start"
+        button_start_race.place(x=650, y=30, width=70, height=25)
+        button_start_race["command"] = self.button_start_race_command
+
+        button_pause_race = tk.Button(root)
+        button_pause_race["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times', size=10)
+        button_pause_race["font"] = ft
+        button_pause_race["fg"] = "#000000"
+        button_pause_race["justify"] = "center"
+        button_pause_race["text"] = "pause"
+        button_pause_race.place(x=730, y=30, width=70, height=25)
+        button_pause_race["command"] = self.button_pause_race_command
+
+        label_actual_speed = tk.Label(root)
+        ft = tkFont.Font(family='Times', size=10)
+        label_actual_speed["bg"] = "#393d49"
+        label_actual_speed["font"] = ft
+        label_actual_speed["fg"] = "#ffffff"
+        label_actual_speed["justify"] = "center"
+        label_actual_speed["text"] = "Actual speed :"
+        label_actual_speed.place(x=810, y=30, width=88, height=25)
+
+        dynamic_actual_speed = tk.Label(root)
+        ft = tkFont.Font(family='Times', size=10)
+        dynamic_actual_speed["bg"] = "#393d49"
+        dynamic_actual_speed["font"] = ft
+        dynamic_actual_speed["fg"] = "#ffffff"
+        dynamic_actual_speed["justify"] = "center"
+        dynamic_actual_speed["text"] = "0"
+        dynamic_actual_speed.place(x=900, y=30, width=70, height=25)
+
+        button_speed_x_0_25 = tk.Button(root)
+        button_speed_x_0_25["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times', size=10)
+        button_speed_x_0_25["font"] = ft
+        button_speed_x_0_25["fg"] = "#000000"
+        button_speed_x_0_25["justify"] = "center"
+        button_speed_x_0_25["text"] = "x0.25"
+        button_speed_x_0_25.place(x=650, y=80, width=70, height=25)
+        button_speed_x_0_25["command"] = self.button_speed_x_0_25_command
+
+        button_speed_x_0_5 = tk.Button(root)
+        button_speed_x_0_5["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times', size=10)
+        button_speed_x_0_5["font"] = ft
+        button_speed_x_0_5["fg"] = "#000000"
+        button_speed_x_0_5["justify"] = "center"
+        button_speed_x_0_5["text"] = "x0.5"
+        button_speed_x_0_5.place(x=730, y=80, width=70, height=25)
+        button_speed_x_0_5["command"] = self.button_speed_x_0_5_command
+
+        button_speed_x_4 = tk.Button(root)
+        button_speed_x_4["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times', size=10)
+        button_speed_x_4["font"] = ft
+        button_speed_x_4["fg"] = "#000000"
+        button_speed_x_4["justify"] = "center"
+        button_speed_x_4["text"] = "x4"
+        button_speed_x_4.place(x=890, y=80, width=70, height=25)
+        button_speed_x_4["command"] = self.button_speed_x_4_command
+
+        return root
+
+    def button_speed_x_2_command(self):
+        pass
+
+    def button_speed_x_4_command(self):
+        pass
+
+    def button_speed_x_0_25_command(self):
+        pass
+
+    def button_speed_x_0_5_command(self):
+        pass
+
+    def button_pause_race_command(self):
+        pass
+
+    def button_start_race_command(self):
+        pass
 
     def button_import_data_command(self):
 
@@ -321,19 +465,21 @@ class Gui(tk.Tk):
     print("FIN DES DONNES DU COUREUR")
     def button_start_race_command(self):
 
-        if GLabel_924["text"] == "Runner list":
-            messagebox.showinfo(message="Veuillez rajouter des coureurs avant de créer la course")
-
-        elif entry_name_race.get() in listbox_races.get(0,listbox_races.size()):
-            messagebox.showinfo(message="Cette course existe déjà")
-        
-        else:
-            altitude_longitude_lattitude=self.données(coureur=listbox_files.get(0,listbox_files.size()),motclef="coordonnées")
-            print(altitude_longitude_lattitude)
-            listbox_races.insert("end",entry_name_race.get())
-            map_widget = TkinterMapView(width=600,height=200,)
-            map_widget.place(relx=0.62, rely=0.67,anchor="center")
-            map_widget.set_position(48.860381, 2.338594)
+        left_column_home = self.frame_race()
+        left_column_home.place(x=280, y=0, width=1000, height=720)
+        # if GLabel_924["text"] == "Runner list":
+        #     messagebox.showinfo(message="Veuillez rajouter des coureurs avant de créer la course")
+        #
+        # elif entry_name_race.get() in listbox_races.get(0,listbox_races.size()):
+        #     messagebox.showinfo(message="Cette course existe déjà")
+        #
+        # else:
+        #     altitude_longitude_lattitude=self.données(coureur=listbox_files.get(0,listbox_files.size()),motclef="coordonnées")
+        #     print(altitude_longitude_lattitude)
+        #     listbox_races.insert("end",entry_name_race.get())
+        #     map_widget = TkinterMapView(width=600,height=200,)
+        #     map_widget.place(relx=0.62, rely=0.67,anchor="center")
+        #     map_widget.set_position(48.860381, 2.338594)
     
     def button_add_runner_command(self):
         file_name=[]

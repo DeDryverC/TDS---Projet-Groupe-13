@@ -12,13 +12,13 @@ if __name__ == '__main__':
          ],
         [
             sg.Listbox(
-                values=[], enable_events=True, size=(40,20), key="-FILE LIST-"
+                values=[], enable_events=True, size=(40, 20), key="-FILE LIST-"
             )
         ]
     ]
     file_viewer_colum = [
         [sg.Text("Choose a file in the left :")],
-        [sg.Text(size=(40,1), key="-TOUT-")],
+        [sg.Text(size=(40, 1), key="-TOUT-")],
         [sg.Image(key="-IMAGE-")]
     ]
     layout = [
