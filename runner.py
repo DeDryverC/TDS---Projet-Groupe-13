@@ -14,18 +14,24 @@ class Runner:
         self.__calorie = 0
         self.__elevation = []
         self.__heartrate = []
+        self.__speed = []
         self.read_data()
-        print(self.__heartrate)
 
     def read_data(self):
         all_coord = []
         elevation = []
         heartrate = []
+        speed = []
         for i in self.__data.trackpoints:
             all_coord.append((i.latitude, i.longitude))
             elevation.append(i.elevation)
             heartrate.append(i.hr_value)
+            if i.tpx_ext.get('Speed'):
+                speed.append(i.tpx_ext.get('Speed')*1.60934)
+            else:
+                speed.append(None)
 
+        self.__speed = speed
         self.__heartrate = heartrate
         self.__track = all_coord
         self.__elevation = elevation
@@ -41,3 +47,7 @@ class Runner:
     @property
     def get_heartrate(self):
         return self.__heartrate
+
+    @property
+    def get_speed(self):
+        return self.__speed

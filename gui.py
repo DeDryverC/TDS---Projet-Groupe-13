@@ -191,6 +191,8 @@ class Gui(tk.Tk):
     def frame_race(self):
         root = tk.Frame(self, background="#393d49")
 
+
+
         frame_data_1 = tk.Label(root)
         frame_data_1["bg"] = "#0000ff"
         ft = tkFont.Font(family='Times', size=10)
@@ -200,14 +202,32 @@ class Gui(tk.Tk):
         frame_data_1["text"] = "label"
         frame_data_1.place(x=350, y=550, width=300, height=150)
 
+        label_actual_heartrate = tk.Label(root)
+        ft = tkFont.Font(family='Times', size=10)
+        label_actual_heartrate["bg"] = "#ffffff"
+        label_actual_heartrate["font"] = ft
+        label_actual_heartrate["fg"] = "#000000"
+        label_actual_heartrate["justify"] = "center"
+        label_actual_heartrate["text"] = "Heartrate"
+        label_actual_heartrate.place(x=455, y=530, width=90, height=25)
+
         frame_data_2 = tk.Label(root)
-        frame_data_2["bg"] = "#0033ff"
+        frame_data_2["bg"] = "#0000ff"
         ft = tkFont.Font(family='Times', size=10)
         frame_data_2["font"] = ft
         frame_data_2["fg"] = "#333333"
         frame_data_2["justify"] = "center"
         frame_data_2["text"] = "label"
         frame_data_2.place(x=680, y=550, width=300, height=150)
+
+        label_actual_elevation = tk.Label(root)
+        ft = tkFont.Font(family='Times', size=10)
+        label_actual_elevation["bg"] = "#ffffff"
+        label_actual_elevation["font"] = ft
+        label_actual_elevation["fg"] = "#000000"
+        label_actual_elevation["justify"] = "center"
+        label_actual_elevation["text"] = "Heartrate"
+        label_actual_elevation.place(x=125, y=530, width=90, height=25)
 
         frame_data_3 = tk.Label(root)
         frame_data_3["bg"] = "#002bff"
@@ -217,6 +237,15 @@ class Gui(tk.Tk):
         frame_data_3["justify"] = "center"
         frame_data_3["text"] = "label"
         frame_data_3.place(x=20, y=550, width=300, height=150)
+
+        label_real_speed = tk.Label(root)
+        ft = tkFont.Font(family='Times', size=10)
+        label_real_speed["bg"] = "#ffffff"
+        label_real_speed["font"] = ft
+        label_real_speed["fg"] = "#000000"
+        label_real_speed["justify"] = "center"
+        label_real_speed["text"] = "Speed (km/h)"
+        label_real_speed.place(x=785, y=530, width=90, height=25)
 
         button_close = tk.Button(root)
         button_close["bg"] = "#bc0000"
@@ -475,9 +504,11 @@ class Gui(tk.Tk):
         track = self.__runners[0].get_track
         elevation = self.__runners[0].get_elevation
         heartrate = self.__runners[0].get_heartrate
+        speed = self.__runners[0].get_speed
 
         list_elevation = [0 for i in range(101)]
         list_heartrate = [0 for i in range(101)]
+        list_speed = [0 for i in range(101)]
 
         count = 0
         for i in track:
@@ -486,15 +517,22 @@ class Gui(tk.Tk):
             else:
                 self.marker2 = self.marker1
             self.marker1 = self._map.set_marker(i[0], i[1])
+
             if elevation[count] is not None:
                 list_elevation.insert(len(list_elevation), int(elevation[count]))
                 list_elevation.pop(0)
+
             if heartrate[count] is not None:
                 list_heartrate.insert(len(list_heartrate), int(heartrate[count]))
                 list_heartrate.pop(0)
 
+            if speed[count] is not None:
+                list_speed.insert(len(list_speed), int(speed[count]))
+                list_speed.pop(0)
+
             self.show_elevation(list_elevation)
             self.show_hr(list_heartrate)
+            self.show_speed(list_speed)
             self.update()
             time.sleep(self.__speed)
             self.marker2.delete()
@@ -516,6 +554,14 @@ class Gui(tk.Tk):
         canvas2 = FigureCanvasTkAgg(fig, self)
         canvas2.draw()
         canvas2.get_tk_widget().place(x=630, y=550, width=300, height=150)
+
+    def show_speed(self, y):
+        fig = Figure(figsize=(10, 8), dpi=100)
+        plot1 = fig.add_subplot(111)
+        plot1.plot(y)
+        canvas2 = FigureCanvasTkAgg(fig, self)
+        canvas2.draw()
+        canvas2.get_tk_widget().place(x=960, y=550, width=300, height=150)
 
     def button_import_data_command(self):
 
